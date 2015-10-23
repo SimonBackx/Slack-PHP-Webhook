@@ -117,4 +117,5 @@ Or short
 	$message = new SlackMessage($slack)->addAttachment($attachment1)->addAttachment($attachment2)->send();
 ```
 
-	
+# Rate limits
+For safety reasons, you can post only two messages at the same time. Posting messages will slow down your website. You can change this value in slack.php.
