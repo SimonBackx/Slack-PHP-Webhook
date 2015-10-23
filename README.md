@@ -20,7 +20,7 @@ When you scroll all the way down, you get more options to change your default us
 ## Simple message
 
 ```php
-	// First setup your Slack Webhook, use the url you got earlier
+	// Use the url you got earlier
 	$slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 	
 	// Create a new message
@@ -33,7 +33,7 @@ When you scroll all the way down, you get more options to change your default us
 
 ## Send to a specified channel
 ```php
-	// First setup your Slack Webhook, use the url you got earlier
+	// Use the url you got earlier
 	$slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 	
 	// Create a new message
@@ -46,7 +46,7 @@ When you scroll all the way down, you get more options to change your default us
 
 ## Send to a specified user
 ```php
-	// First setup your Slack Webhook, use the url you got earlier
+	// Use the url you got earlier
 	$slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 	
 	// Create a new message
@@ -60,7 +60,6 @@ When you scroll all the way down, you get more options to change your default us
 You can overwrite the defaults on two levels: in a Slack instance (defaults for all messages using this Slack instance) or SlackMessage instances (only for the current message). These methods will not modify your root defaults at Slack.com, but will overwrite them temporary in your code.
 
 ```php
-// First setup your Slack Webhook, use the url you got earlier
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 $slack->setDefaultUsername("SlackPHP robot"); 
 $slack->setDefaultChannel("#general");
