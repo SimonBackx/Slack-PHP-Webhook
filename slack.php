@@ -1,15 +1,31 @@
 <?php 
 /*
-* Free for commercial use.
-* Created by Simon Backx
-* You're free to make changes to this file, but keep attribution in comments. Have fun coding!
-*
-* Check Github for more details.
+	The MIT License (MIT)
+	
+	Copyright (c) 2015 Simon Backx
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
 */
 
 /**
-	Main Object. Construct it by passing your webhook url from slack.com (e.g. https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX)
-	Needed for posting Slack Messages
+	*  Main Object. Construct it by passing your webhook url from slack.com (e.g. https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX)
+	*  Needed for posting Slack Messages
 */
 class Slack{
 	// WebhookUrl e.g. https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
@@ -18,23 +34,23 @@ class Slack{
 	// Maximum amount of posts per page load. Keep this low for safety. Each post you place requires your server to send some data to slack, and that can take some time.
 	const MAX_POSTS = 2; 
 	
-	public $posts = 0;
+	private $posts = 0;
 	
 	// Empty => Default username set in Slack Webhook integration settings
-	public $username; 
+	private $username; 
 	
 	// Empty => Default channel set in Slack Webhook integration settings
-	public $channel;
+	private $channel;
 	
 	// Empty => Default icon set in Slack Webhook integration settings
-	public $icon_url;
+	private $icon_url;
 	
 	// Empty => Default icon set in Slack Webhook integration settings
-	public $icon_emoji;
+	private $icon_emoji;
 	
 	// Unfurl links: automatically fetch and create attachments for URLs
 	// Empty = default (false)
-	public $unfurl_links;
+	private $unfurl_links;
 		
 	function __construct($webhookUrl){
 		$this->url = $webhookUrl;
@@ -48,10 +64,9 @@ class Slack{
 		if ($this->posts >= self::MAX_POSTS){
 			return false;
 		}
-	
-		// Loading defaults
 		$this->posts++;
 		
+		// Loading defaults
 		if (isset($this->username))
 			$username = $this->username;
 		if (isset($this->channel))
@@ -93,12 +108,10 @@ class Slack{
 			
 		if (isset($message->attachments)){
 			$attachments = array();
-			
 			foreach ($message->attachments as $attachment) {
 				$attachments[] = $attachment->toArray();
 			}
 			$data['attachments'] = $attachments;
-			
 		}
 		
 		try {
@@ -127,15 +140,26 @@ class Slack{
 		}
 		
 	}
-	function setUsername($username) {
+	function setDefaultUnfurlLinks($unfurl) {
+		$this->unfurl_links = $unfurl;
+		return $this;
+	}
+	function setDefaultChannel(){
+		$this->channel = $channel;
+		return $this;
+	}
+	function setDefaultUsername($username) {
 		$this->username = $username;
 		return $this;
 	}
-	function setEmoji($emoji) {
+	function setDefaultIcon($url) {
+		$this->icon_url = $url;
+		return $this;
+	}
+	function setDefaultEmoji($emoji) {
 		$this->icon_emoji = $emoji;
 		return $this;
 	}
-
 }
 class SlackMessage{
 	private $slack;
@@ -205,16 +229,13 @@ class SlackMessage{
 	function send(){
 		return $this->slack->send($this);
 	}
-	
-	
-
 }
 
 class SlackAttachment{
 	// Required
 	public $fallback = "";
 	
-	// Optional
+	// Optionals
 	public $color;
 	public $pretext;
 	public $author_name;
@@ -274,6 +295,11 @@ class SlackAttachment{
 		}
 		return $this;
 	}
+	function setImage($url) {
+		$this->image_url = $url;
+		return $this;
+	}
+	
 	function addFieldInstance(SlackAttachmentField $field){
 		if (!isset($this->fields)){
 			$this->fields = array($field);
@@ -288,10 +314,7 @@ class SlackAttachment{
 	function addField($title, $value, $short = NULL){
 		return $this->addFieldInstance(new SlackAttachmentField($title, $value, $short));
 	}
-	function setImage($url) {
-		$this->image_url = $url;
-		return $this;
-	}
+	
 	
 	function toArray(){
 		$data = array(
