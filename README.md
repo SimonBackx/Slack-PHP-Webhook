@@ -2,19 +2,19 @@
 Easy to use PHP library to post messages in Slack.
 
 # Setup
-Log in on slack.com with your team. Go to the page with all your integrations. Add a new incoming webhook.
+Log in at slack.com with your team. Go to the page with all your integrations. Add a new incoming webhook.
 
-Select a default channel to post your messages to. You can post to different channels if you want, just add it PHP code (see later).
+Select a default channel to post your messages.
 ![Setup1]
 (http://www.cloock.be/uploads/slack1.png)
 
-Press "Add Incoming WebHook integration"
-On top you find your WebHook URL you need to use this library. Save it somewhere secure.
+Confirm "Add Incoming WebHook integration"
+Next, you will find your WebHook URL which you need to use this library. Save it somewhere secure.
 
 ![Setup2]
 (http://www.cloock.be/uploads/slack2.png)
 
-If you scroll all the way down, you get some options to change your default name, description and icon.
+When you scroll all the way down, you get more options to change your default username, description and icon. You can overwrite these in your code.
 	 
 # Usage
 ## Simple message
@@ -57,7 +57,7 @@ If you scroll all the way down, you get some options to change your default name
 
 ```
 ## Overwriting defaults
-You can overwrite the defaults on two levels: in a Slack instance (defaults for all messages using this Slack instance) or SlackMessage instances (only for the current message). These methods will not modify your root defaults at Slack.com, but will just overwrite them temporary in your PHP script.
+You can overwrite the defaults on two levels: in a Slack instance (defaults for all messages using this Slack instance) or SlackMessage instances (only for the current message). These methods will not modify your root defaults at Slack.com, but will overwrite them temporary in your code.
 
 ```php
 // First setup your Slack Webhook, use the url you got earlier
