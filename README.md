@@ -1,5 +1,5 @@
 # SlackPhp
-Easy to use PHP library to post messages on your Slack Channel (or multiple).
+Easy to use PHP library to post messages in Slack.
 
 # Setup
 Log in on slack.com with your team. Go to the page with all your integrations. Add a new incoming webhook.
