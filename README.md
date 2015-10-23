@@ -2,17 +2,19 @@
 Easy to use PHP library to post messages on your Slack Channel (or multiple).
 
 # Setup
-	 Log in on slack.com with your team. Go to the page with all your integrations. Add a new incoming webhook.
-	 
-	 Select a default channel to post your messages to. You can post to different channels if you want, just add it PHP code (see later).
-	 http://puu.sh/kVb0d/a2b137e4cf.png
-	 
-	 Press "Add Incoming WebHook integration"
-	 On top you find your WebHook URL you need to use this library. Save it somewhere secure.
-	 
-	 http://puu.sh/kVb7v/1bfb9e095e.png
-	 
-	 If you scroll all the way down, you get some options to change your default name, description and icon.
+Log in on slack.com with your team. Go to the page with all your integrations. Add a new incoming webhook.
+
+Select a default channel to post your messages to. You can post to different channels if you want, just add it PHP code (see later).
+![Setup1]
+(http://www.cloock.be/uploads/slack1.png)
+
+Press "Add Incoming WebHook integration"
+On top you find your WebHook URL you need to use this library. Save it somewhere secure.
+
+![Setup2]
+(http://www.cloock.be/uploads/slack2.png)
+
+If you scroll all the way down, you get some options to change your default name, description and icon.
 	 
 # Usage
 ## Simple message
@@ -55,21 +57,27 @@ Easy to use PHP library to post messages on your Slack Channel (or multiple).
 
 ```
 ## Overwriting defaults
-You can overwrite the defaults at 2 levels: in a Slack instance (set defaults for alle messages using this Slack instance) or SlackMessage instances (only for current message). These methods will not modify your root defaults at Slack.com, but will just overwrite them temporary in your PHP script.
+You can overwrite the defaults on two levels: in a Slack instance (defaults for all messages using this Slack instance) or SlackMessage instances (only for the current message). These methods will not modify your root defaults at Slack.com, but will just overwrite them temporary in your PHP script.
 
 ```php
 // First setup your Slack Webhook, use the url you got earlier
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 $slack->setDefaultUsername("SlackPHP robot"); 
 $slack->setDefaultChannel("#general");
-$slack->setDefaultUnfurlLinks(true); // Unfurl links: automatically fetch and create attachments for detected URLs
+
+// Unfurl links: automatically fetch and create attachments for detected URLs
+$slack->setDefaultUnfurlLinks(true); 
+
 $slack->setDefaultIcon("http://www.domain.com/robot.png"); 
 $slack->setDefaultEmoji(":ghost:");
 
 // Create a new message
 $message = new SlackMessage($slack)->setText("Hello world!");
 $message->setChannel("#general");
+
+// Unfurl links: automatically fetch and create attachments for detected URLs
 $message->setUnfurlLinks(false);
+
 $message->setIcon("http://www.domain.com/robot2.png");
 $message->setEmoji(":simple_smile:");
 
