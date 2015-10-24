@@ -27,7 +27,11 @@ When you scroll all the way down, you get more options to change your default us
 	$message = new SlackMessage($slack)->setText("Hello world!");
 	
 	// Send it!
-	$message->send();
+	if ($message->send()){
+		echo "Hurray :D";
+	}else{
+		echo "Failed :(";
+	}
 
 ```
 
@@ -116,5 +120,5 @@ Or short
 	$message = new SlackMessage($slack)->addAttachment($attachment1)->addAttachment($attachment2)->send();
 ```
 
-# Rate limits
-For safety reasons, you can post only two messages at the same time. Posting messages will slow down your website. You can change this value in slack.php.
+# Warning
+Each message requires a new request. So don't send too much messages. The current hardcoded maximum is 10, change it in slack.php.

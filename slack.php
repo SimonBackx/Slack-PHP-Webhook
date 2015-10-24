@@ -32,7 +32,7 @@ class Slack{
 	private $url;
 	
 	// Maximum amount of posts per page load. Keep this low for safety. Each post you place requires your server to send some data to slack, and that can take some time.
-	const MAX_POSTS = 2; 
+	const MAX_POSTS = 10; 
 	
 	private $posts = 0;
 	
