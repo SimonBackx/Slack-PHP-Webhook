@@ -121,4 +121,4 @@ Or short
 ```
 
 # Warning
-Each message requires a new request. So don't send too much messages. The current hardcoded maximum is 10, change it in slack.php.
+Each message requires a new request. So don't send too much messages at once. The current hardcoded maximum is 10, change it in slack.php.
