@@ -17,6 +17,7 @@ Next, you will find your WebHook URL which you need to use this library. Save it
 When you scroll all the way down, you get more options to change your default username, description and icon. You can overwrite these in your code.
 	 
 # Usage
+First, require/include slack.php in your php file.
 ## Simple message
 
 ```php
