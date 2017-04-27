@@ -102,6 +102,8 @@ Check out https://api.slack.com/docs/attachments for more details
 	$attachment->setAuthor("Author name", "Optional author link e.g. http://flickr.com/bobby/", "Optional author icon e.g. http://flickr.com/bobby/picture.jpg");
 	$attachment->setTitle("Title", "Optional link e.g. http://www.cloock.be/");
 	$attachment->setImage("http://www.domain.com/picture.jpg");
+	$attachment->setMrkDwnIn("title");
+	$attachment->setMrkDwnIn("text");
 	
 	 // Add fields, last parameter stand for short (smaller field) and is optional
 	$attachment->addField("Title", "Value", true);
