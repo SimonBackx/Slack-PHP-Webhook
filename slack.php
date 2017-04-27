@@ -245,6 +245,7 @@ class SlackAttachment{
 	public $title_link;
 	public $text;
 	public $fields;
+	public $mrkdwn_in;
 	public $image_url;
 	
 	function __construct($fallback){
@@ -275,6 +276,14 @@ class SlackAttachment{
 	}
 	function setAuthorName($author_name) {
 		$this->author_name = $author_name;
+		return $this;
+	}
+	function setMrkDwnIn($mrkdwn_in) {
+		if (!isset($this->mrkdwn_in_fields)){
+			$this->mrkdwn_in_fields = array($mrkdwn_in);
+			return $this;
+		}
+		$this->mrkdwn_in_fields[] = $mrkdwn_in;
 		return $this;
 	}
 	/**
@@ -326,6 +335,8 @@ class SlackAttachment{
 			$data['pretext'] = $this->pretext;
 		if (isset($this->author_name))
 			$data['author_name'] = $this->author_name;
+		if (isset($this->mrkdwn_in_fields))
+			$data['mrkdwn_in'] = $this->mrkdwn_in_fields;
 		if (isset($this->author_link))
 			$data['author_link'] = $this->author_link;
 		if (isset($this->author_icon))
