@@ -52,15 +52,15 @@ class Slack{
 	// Empty = default (false)
 	private $unfurl_links;
 		
-	function __construct($webhookUrl){
+	function __construct($webhookUrl) {
 		$this->url = $webhookUrl;
 	}
 	
-	public function __isset($property){
+	public function __isset($property) {
 	    return isset($this->$property);
 	}
 	
-	public function send(SlackMessage $message){
+	public function send(SlackMessage $message) {
 		if ($this->posts >= self::MAX_POSTS){
 			return false;
 		}
@@ -97,16 +97,17 @@ class Slack{
 			$data['username'] = $username;
 		if (isset($channel))
 			$data['channel'] = $channel;
-		if (isset($icon_url)){
+		if (isset($icon_url)) {
 			$data['icon_url'] = $icon_url;
-		}else{
+		} else {
 			if (isset($icon_emoji))
 				$data['icon_emoji'] = $icon_emoji;
 		}
+
 		if (isset($unfurl_links))
 			$data['unfurl_links'] = $unfurl_links;
 			
-		if (isset($message->attachments)){
+		if (isset($message->attachments)) {
 			$attachments = array();
 			foreach ($message->attachments as $attachment) {
 				$attachments[] = $attachment->toArray();
@@ -126,13 +127,17 @@ class Slack{
 			    CURLOPT_POSTFIELDS => array('payload' => $json)
 			));
 			$result = curl_exec($curl);
-			if (!$result){
+			
+            if (!$result) {
 				return false;
 			}
+
 			curl_close($curl);
-			if ($result == 'ok'){
+			
+            if ($result == 'ok') {
 				return true;
 			}
+
 			return false;
 		}
 		catch (Exception $e) {
@@ -140,28 +145,34 @@ class Slack{
 		}
 		
 	}
+
 	function setDefaultUnfurlLinks($unfurl) {
 		$this->unfurl_links = $unfurl;
 		return $this;
 	}
-	function setDefaultChannel(){
+
+	function setDefaultChannel() {
 		$this->channel = $channel;
 		return $this;
 	}
+
 	function setDefaultUsername($username) {
 		$this->username = $username;
 		return $this;
 	}
+
 	function setDefaultIcon($url) {
 		$this->icon_url = $url;
 		return $this;
 	}
+
 	function setDefaultEmoji($emoji) {
 		$this->icon_emoji = $emoji;
 		return $this;
 	}
 }
-class SlackMessage{
+
+class SlackMessage {
 	private $slack;
 	
 	// Message to post
@@ -184,49 +195,57 @@ class SlackMessage{
 	// Array of SlackAttachment instances
 	public $attachments;
 	
-	function __construct(Slack $slack){
+	function __construct(Slack $slack) {
 		$this->slack = $slack;
 	}
+
 	/*
 		Settings
 	*/
-	function setText($text){
+	function setText($text) {
 		$this->text = $text;
 		return $this;
 	}
-	function setUsername($username){
+
+	function setUsername($username) {
 		$this->username = $username;
 		return $this;
 	}
-	function setChannel($channel){
+
+	function setChannel($channel) {
 		$this->channel = $channel;
 		return $this;
 	}
-	function setEmoji($emoji){
+
+	function setEmoji($emoji) {
 		$this->icon_emoji = $emoji;
 		return $this;
 	}
-	function setIcon($url){
+
+	function setIcon($url) {
 		$this->icon_url = $url;
 		return $this;
 	}
-	function setUnfurlLinks($bool){
+
+	function setUnfurlLinks($bool) {
 		$this->unfurl_links = $bool;
 		return $this;
 	}
-	function addAttachment(SlackAttachment $attachment){
-		if (!isset($this->attachments)){
+
+	function addAttachment(SlackAttachment $attachment) {
+		if (!isset($this->attachments)) {
 			$this->attachments = array($attachment);
 			return $this;
 		}
+
 		$this->attachments[] = $attachment;
 		return $this;
 	}
 	
 	/*
-		Posting
+	 * Send this message to Slack
 	*/
-	function send(){
+	function send() {
 		return $this->slack->send($this);
 	}
 }
@@ -248,25 +267,38 @@ class SlackAttachment{
 	public $mrkdwn_in;
 	public $image_url;
 	
-	function __construct($fallback){
+	function __construct($fallback) {
 		$this->fallback = $fallback;
 	}
+
 	/**
-		good, warning, danger or any hex color code
+	 * Accepted values: "good", "warning", "danger" or any hex color code
 	*/
-	function setColor($color){
+	function setColor($color) {
 		$this->color = $color;
 		return $this;
 	}
+
 	function setText($text) {
 		$this->text = $text;
 		return $this;
 	}
+
+    /**
+     * Optional text that appears above the attachment block
+     */
 	function setPretext($pretext) {
 		$this->pretext = $pretext;
 		return $this;
 	}
-	function setAuthor($author_name, $author_link = NULL, $author_icon = NULL){
+
+    /**
+     * The author parameters will display a small section at the top of a message attachment.
+     * @param string $author_name [description]
+     * @param optional string $author_link A valid URL that will hyperlink the author_name text mentioned above. Set to NULL to ignore this value.
+     * @param optional string $author_icon A valid URL that displays a small 16x16px image to the left of the author_name text. Set to NULL to ignore this value.
+     */
+	function setAuthor($author_name, $author_link = NULL, $author_icon = NULL) {
 		$this->setAuthorName($author_name);
 		if (isset($author_link))
 			$this->setAuthorLink($author_link);
@@ -274,11 +306,17 @@ class SlackAttachment{
 			$this->setAuthorIcon($author_icon);
 		return $this;
 	}
+
 	function setAuthorName($author_name) {
 		$this->author_name = $author_name;
 		return $this;
 	}
-	function setMrkDwnIn($mrkdwn_in) {
+
+    /** 
+     * Enable text formatting for: "pretext", "text" or "fields". 
+     * Setting "fields" will enable markup formatting for the value of each field.
+     */
+	function enableMarkdownFor($mrkdwn_in) {
 		if (!isset($this->mrkdwn_in_fields)){
 			$this->mrkdwn_in_fields = array($mrkdwn_in);
 			return $this;
@@ -286,17 +324,28 @@ class SlackAttachment{
 		$this->mrkdwn_in_fields[] = $mrkdwn_in;
 		return $this;
 	}
+
 	/**
-		Icon size: 16x16
-	*/
+     * A valid URL that displays a small 16x16px image to the left of the author_name text.
+     */
 	function setAuthorIcon($author_icon) {
 		$this->author_icon = $author_icon;
 		return $this;
 	}
+
+    /**
+     * A valid URL that will hyperlink the author_name text mentioned above.
+     */
 	function setAuthorLink($author_link) {
 		$this->author_link = $author_link;
 		return $this;
 	}
+
+    /**
+     * The title is displayed as larger, bold text near the top of a message attachment. 
+     * @param string $title
+     * @param optional string $link  By passing a valid URL in the link parameter (optional), the title text will be hyperlinked.
+     */
 	function setTitle($title, $link = NULL) {
 		$this->title = $title;
 		if (isset($link)){
@@ -304,12 +353,13 @@ class SlackAttachment{
 		}
 		return $this;
 	}
+
 	function setImage($url) {
 		$this->image_url = $url;
 		return $this;
 	}
 	
-	function addFieldInstance(SlackAttachmentField $field){
+	function addFieldInstance(SlackAttachmentField $field) {
 		if (!isset($this->fields)){
 			$this->fields = array($field);
 			return $this;
@@ -317,15 +367,16 @@ class SlackAttachment{
 		$this->fields[] = $field;
 		return $this;
 	}
+
 	/**
-		Shortcut without defining SlackAttachmentField
+	 * Shortcut without defining SlackAttachmentField
 	*/
-	function addField($title, $value, $short = NULL){
+	function addField($title, $value, $short = NULL) {
 		return $this->addFieldInstance(new SlackAttachmentField($title, $value, $short));
 	}
 	
 	
-	function toArray(){
+	function toArray() {
 		$data = array(
 			'fallback' => $this->fallback
 		);
@@ -360,13 +411,15 @@ class SlackAttachment{
 		return $data;
 	}
 }
-class SlackAttachmentField{
+
+class SlackAttachmentField {
 	// Required
 	public $title = "";
 	public $value = "";
 	
 	// Optional
 	public $short;
+
 	function __construct($title, $value, $short = NULL) {
 		$this->title = $title;
 		$this->value = $value;
@@ -374,12 +427,13 @@ class SlackAttachmentField{
 			$this->short = $short;
 		}
 	}
-	function setShort($bool = true){
+
+	function setShort($bool = true) {
 		$this->short = $bool;
 		return $this;
 	}
 	
-	function toArray(){
+	function toArray() {
 		$data = array(
 			'title' => $this->title,
 			'value' => $this->value

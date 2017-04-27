@@ -98,10 +98,10 @@ $attachment->setAuthor("Author name", "Optional author link e.g. http://flickr.c
 $attachment->setTitle("Title", "Optional link e.g. http://www.cloock.be/");
 $attachment->setImage("http://www.domain.com/picture.jpg");
 
-// setMrkDwnIn enables message formatting (https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-) in attachements.
+// enableMarkdownFor enables message formatting (https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-) in attachements.
 // Possible values: "pretext", "text", "fields"
 // More info: https://api.slack.com/docs/message-formatting
-$attachment->setMrkDwnIn("text");
+$attachment->enableMarkdownFor("text");
 
  // Add fields, last parameter stand for short (smaller field) and is optional
 $attachment->addField("Title", "Value", true);
