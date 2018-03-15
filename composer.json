@@ -14,14 +14,15 @@
             "role": "Developer"
         },
     ],
+
     "version": "1.0.0",
 
     "support": {
         "source": "https://github.com/SimonBackx/Slack-PHP-Webhook",
-        "issues": "https://github.com/SimonBackx/Slack-PHP-Webhook/issues",
+        "issues": "https://github.com/SimonBackx/Slack-PHP-Webhook/issues"
     },
 
     "autoload": {
         "files": ["slack.php"]
-    },
+    }
 }
