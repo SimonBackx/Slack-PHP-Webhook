@@ -5,7 +5,6 @@
     "keywords": ["Slack", "Webhook", "Channels", "Logging", "Message"],
     "homepage": "https://github.com/SimonBackx/Slack-PHP-Webhook",
     "license": "MIT",
-    "version": "1.0.1",
 
     "authors": [
         {
