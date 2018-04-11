@@ -29,107 +29,34 @@ SOFTWARE.
  */
 class Slack {
 	// WebhookUrl e.g. https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
-	private $url;
+	public $url;
 
 	// Empty => Default username set in Slack Webhook integration settings
-	private $username;
+	public $username;
 
 	// Empty => Default channel set in Slack Webhook integration settings
-	private $channel;
+	public $channel;
 
 	// Empty => Default icon set in Slack Webhook integration settings
-	private $icon_url;
+	public $icon_url;
 
 	// Empty => Default icon set in Slack Webhook integration settings
-	private $icon_emoji;
+	public $icon_emoji;
 
 	// Unfurl links: automatically fetch and create attachments for URLs
 	// Empty = default (false)
-	private $unfurl_links;
+	public $unfurl_links;
 
 	function __construct($webhookUrl) {
 		$this->url = $webhookUrl;
 	}
 
-	public function __isset($property) {
+	function __isset($property) {
 		return isset($this->$property);
 	}
 
-	public function send(SlackMessage $message) {
-
-		// Loading defaults
-		if (isset($this->username)) {
-			$username = $this->username;
-		}
-
-		if (isset($this->channel)) {
-			$channel = $this->channel;
-		}
-
-		if (isset($this->icon_url)) {
-			$icon_url = $this->icon_url;
-		}
-
-		if (isset($this->icon_emoji)) {
-			$icon_emoji = $this->icon_emoji;
-		}
-
-		if (isset($this->unfurl_links)) {
-			$unfurl_links = $this->unfurl_links;
-		}
-
-		// Overwrite/create defaults
-		if (isset($message->username)) {
-			$username = $message->username;
-		}
-
-		if (isset($message->channel)) {
-			$channel = $message->channel;
-		}
-
-		if (isset($message->icon_url)) {
-			$icon_url = $message->icon_url;
-		}
-
-		if (isset($message->icon_emoji)) {
-			$icon_emoji = $message->icon_emoji;
-		}
-
-		if (isset($message->unfurl_links)) {
-			$unfurl_links = $message->unfurl_links;
-		}
-
-		$data = array(
-			'text' => $message->text,
-		);
-		if (isset($username)) {
-			$data['username'] = $username;
-		}
-
-		if (isset($channel)) {
-			$data['channel'] = $channel;
-		}
-
-		if (isset($icon_url)) {
-			$data['icon_url'] = $icon_url;
-		} else {
-			if (isset($icon_emoji)) {
-				$data['icon_emoji'] = $icon_emoji;
-			}
-
-		}
-
-		if (isset($unfurl_links)) {
-			$data['unfurl_links'] = $unfurl_links;
-		}
-
-		if (isset($message->attachments)) {
-			$attachments = array();
-			foreach ($message->attachments as $attachment) {
-				$attachments[] = $attachment->toArray();
-			}
-			$data['attachments'] = $attachments;
-		}
+	function send(SlackMessage $message) {
+		$data = $message->toArray();
 
 		try {
 			$json = json_encode($data);
@@ -257,6 +184,83 @@ class SlackMessage {
 		return $this;
 	}
 
+	function toArray() {
+		// Loading defaults
+		if (isset($this->slack->username)) {
+			$username = $this->slack->username;
+		}
+
+		if (isset($this->slack->channel)) {
+			$channel = $this->slack->channel;
+		}
+
+		if (isset($this->slack->icon_url)) {
+			$icon_url = $this->slack->icon_url;
+		}
+
+		if (isset($this->slack->icon_emoji)) {
+			$icon_emoji = $this->slack->icon_emoji;
+		}
+
+		if (isset($this->slack->unfurl_links)) {
+			$unfurl_links = $this->slack->unfurl_links;
+		}
+
+		// Overwrite/create defaults
+		if (isset($this->username)) {
+			$username = $this->username;
+		}
+
+		if (isset($this->channel)) {
+			$channel = $this->channel;
+		}
+
+		if (isset($this->icon_url)) {
+			$icon_url = $this->icon_url;
+		}
+
+		if (isset($this->icon_emoji)) {
+			$icon_emoji = $this->icon_emoji;
+		}
+
+		if (isset($this->unfurl_links)) {
+			$unfurl_links = $this->unfurl_links;
+		}
+
+		$data = array(
+			'text' => $this->text,
+		);
+		if (isset($username)) {
+			$data['username'] = $username;
+		}
+
+		if (isset($channel)) {
+			$data['channel'] = $channel;
+		}
+
+		if (isset($icon_url)) {
+			$data['icon_url'] = $icon_url;
+		} else {
+			if (isset($icon_emoji)) {
+				$data['icon_emoji'] = $icon_emoji;
+			}
+
+		}
+
+		if (isset($unfurl_links)) {
+			$data['unfurl_links'] = $unfurl_links;
+		}
+
+		if (isset($this->attachments)) {
+			$attachments = array();
+			foreach ($this->attachments as $attachment) {
+				$attachments[] = $attachment->toArray();
+			}
+			$data['attachments'] = $attachments;
+		}
+		return $data;
+	}
+
 	/*
 		 * Send this message to Slack
 	*/
@@ -280,20 +284,16 @@ class SlackAttachment {
 	public $text;
 	public $fields;
 	public $mrkdwn_in;
-
-	/**
-	 * A valid URL to an image file that will be displayed inside a message attachment. We currently support the following formats: GIF, JPEG, PNG, and BMP.
-	 */
 	public $image_url;
-
-	/**
-	 * A valid URL to an image file that will be displayed as a thumbnail on the right side of a message attachment. We currently support the following formats: GIF, JPEG, PNG, and BMP.
-	 */
 	public $thumb_url;
 
+	// Footer
 	public $footer;
 	public $footer_icon;
 	public $ts;
+
+	// Actions
+	public $actions;
 
 	function __construct($fallback) {
 		$this->fallback = $fallback;
@@ -421,7 +421,7 @@ class SlackAttachment {
 	 *  screen real estate.
 	 * @param string $text max 300 characters
 	 */
-	public function setFooterText($text) {
+	function setFooterText($text) {
 		$this->footer = $text;
 		return $this;
 	}
@@ -434,7 +434,7 @@ class SlackAttachment {
 	 * sized.
 	 * @param string $url 16x16 image url
 	 */
-	public function setFooterIcon($url) {
+	function setFooterIcon($url) {
 		$this->footer_icon = $url;
 		return $this;
 	}
@@ -449,7 +449,7 @@ class SlackAttachment {
 	 * Example: Providing 123456789 would result in a rendered timestamp of Nov 29th, 1973.
 	 * @param int $timestamp Integer value in "epoch time"
 	 */
-	public function setTimestamp($timestamp) {
+	function setTimestamp($timestamp) {
 		$this->ts = $timestamp;
 		return $this;
 	}
@@ -468,6 +468,38 @@ class SlackAttachment {
 	 */
 	function addField($title, $value, $short = NULL) {
 		return $this->addFieldInstance(new SlackAttachmentField($title, $value, $short));
+	}
+
+	private function addAction($action) {
+		if (!isset($this->actions)) {
+			$this->actions = array($action);
+			return $this;
+		}
+		$this->actions[] = $action;
+		return $this;
+	}
+
+	/**
+	 * @param string $text  A UTF-8 string label for this button. Be brief but descriptive and
+	 * actionable.
+	 * @param string $url   The fully qualified http or https URL to deliver users to. Invalid URLs
+	 * will result in a message posted with the button omitted
+	 * @param string $style  (optional) Setting to primary turns the button green and indicates the
+	 * best forward action to take. Providing danger turns the button red and indicates it some kind
+	 *  of destructive action. Use sparingly. Be default, buttons will use the UI's default text
+	 *  color.
+	 */
+	function addButton($text, $url, $style = null) {
+		$action = (object) [
+			"type" => "button",
+			"text" => $text,
+			"url" => $url,
+		];
+		if (isset($style)) {
+			$action->style = $style;
+		}
+		$this->addAction($action);
+		return $this;
 	}
 
 	function toArray() {
@@ -536,6 +568,10 @@ class SlackAttachment {
 
 		if (isset($this->ts)) {
 			$data['ts'] = $this->ts;
+		}
+
+		if (isset($this->actions)) {
+			$data['actions'] = (array) $this->actions;
 		}
 
 		return $data;
