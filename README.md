@@ -13,7 +13,7 @@ Next, you will find your WebHook URL which you need to use this library. Save it
 ![Setup2](http://www.cloock.be/uploads/slack2.png)
 
 When you scroll all the way down, you get more options to change your default username, description and icon. You can overwrite these in your code.
-	 
+
 # Usage
 First, require/include slack.php in your php file.
 ## Simple message
@@ -23,7 +23,7 @@ First, require/include slack.php in your php file.
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 
 // Create a new message
-$message = new SlackMessage($slack)->setText("Hello world!");
+$message = (new SlackMessage($slack))->setText("Hello world!");
 
 // Send it!
 if ($message->send()) {
@@ -39,7 +39,7 @@ if ($message->send()) {
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 
 // Create a new message
-$message = new SlackMessage($slack)->setText("Hello world!")->setChannel("#general");
+$message = (new SlackMessage($slack))->setText("Hello world!")->setChannel("#general");
 
 // Send it!
 $message->send();
@@ -51,7 +51,7 @@ $message->send();
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
 
 // Create a new message
-$message = new SlackMessage($slack)->setText("Hello world!")->setChannel("@simonbackx");
+$message = (new SlackMessage($slack))->setText("Hello world!")->setChannel("@simonbackx");
 
 // Send it!
 $message->send();
@@ -61,13 +61,13 @@ You can overwrite the defaults on two levels: in a Slack instance (defaults for 
 
 ```php
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
-$slack->setDefaultUsername("SlackPHP robot"); 
+$slack->setDefaultUsername("SlackPHP robot");
 $slack->setDefaultChannel("#general");
 
 // Unfurl links: automatically fetch and create attachments for detected URLs
-$slack->setDefaultUnfurlLinks(true); 
+$slack->setDefaultUnfurlLinks(true);
 
-$slack->setDefaultIcon("http://www.domain.com/robot.png"); 
+$slack->setDefaultIcon("http://www.domain.com/robot.png");
 $slack->setDefaultEmoji(":ghost:");
 
 // Create a new message
@@ -118,7 +118,7 @@ $message->send();
 ```
 Or short
 ```php
-$message = new SlackMessage($slack)->addAttachment($attachment1)->addAttachment($attachment2)->send();
+$message = (new SlackMessage($slack))->addAttachment($attachment1)->addAttachment($attachment2)->send();
 ```
 
 # Warning
