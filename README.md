@@ -1,4 +1,6 @@
 # Slack PHP Webhook
+[![Latest Stable Version](https://poser.pugx.org/simonbackx/slack-php-webhook/v/stable)](https://packagist.org/packages/simonbackx/slack-php-webhook) [![License](https://poser.pugx.org/simonbackx/slack-php-webhook/license)](https://packagist.org/packages/simonbackx/slack-php-webhook)
+
 Easy to use PHP library to post messages in Slack using incoming webhook integrations.
 
 # Setup
@@ -15,7 +17,24 @@ Next, you will find your WebHook URL which you need to use this library. Save it
 When you scroll all the way down, you get more options to change your default username, description and icon. You can overwrite these in your code.
 	 
 # Usage
-First, require/include slack.php in your php file.
+## Installation
+
+### Composer
+
+Add Slack-PHP-Webhook to your composer.json file or run `composer require simonbackx/slack-php-webhook`
+
+```json
+{
+  "require": {
+    "simonbackx/slack-php-webhook": "~1.0"
+  }
+}
+```
+
+### Alternative
+
+Download slack.php and require/include it in your PHP file.
+
 ## Simple message
 
 ```php
@@ -27,9 +46,9 @@ $message = new SlackMessage($slack)->setText("Hello world!");
 
 // Send it!
 if ($message->send()) {
-	echo "Hurray :D";
+    echo "Hurray 😄";
 } else {
-	echo "Failed :(";
+    echo "Failed 😢";
 }
 ```
 
@@ -67,7 +86,10 @@ $slack->setDefaultChannel("#general");
 // Unfurl links: automatically fetch and create attachments for detected URLs
 $slack->setDefaultUnfurlLinks(true); 
 
+// Set the default icon for messages to a custom image
 $slack->setDefaultIcon("http://www.domain.com/robot.png"); 
+
+// Use a 👻 emoji as default icon for messages if it is not overwritten in messages
 $slack->setDefaultEmoji(":ghost:");
 
 // Create a new message
@@ -77,7 +99,10 @@ $message->setChannel("#general");
 // Unfurl links: automatically fetch and create attachments for detected URLs
 $message->setUnfurlLinks(false);
 
+// Set the icon for the message to a custom image
 $message->setIcon("http://www.domain.com/robot2.png");
+
+// Overwrite the default Emoji (if any) with 😊
 $message->setEmoji(":simple_smile:");
 
 // Send it!
@@ -104,7 +129,7 @@ $attachment->setImage("http://www.domain.com/picture.jpg");
 $attachment->enableMarkdownFor("text");
 
  // Add fields, last parameter stand for short (smaller field) and is optional
-$attachment->addField("Title", "Value", true);
+$attachment->addField("Title", "Value");
 $attachment->addField("Title2", "Value2", true);
 $attachment->addField("Title", "Value", false);
 ```
@@ -122,4 +147,4 @@ $message = new SlackMessage($slack)->addAttachment($attachment1)->addAttachment(
 ```
 
 # Warning
-Each message requires a new request. So don't send too much messages at once. The current hardcoded maximum is 10, change it in slack.php.
+Each message initiates a new HTTPS request, which takes some time. Don't send too much messages at once if you are not running your script in a background task.
