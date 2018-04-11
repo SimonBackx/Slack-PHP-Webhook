@@ -280,7 +280,20 @@ class SlackAttachment {
 	public $text;
 	public $fields;
 	public $mrkdwn_in;
+
+	/**
+	 * A valid URL to an image file that will be displayed inside a message attachment. We currently support the following formats: GIF, JPEG, PNG, and BMP.
+	 */
 	public $image_url;
+
+	/**
+	 * A valid URL to an image file that will be displayed as a thumbnail on the right side of a message attachment. We currently support the following formats: GIF, JPEG, PNG, and BMP.
+	 */
+	public $thumb_url;
+
+	public $footer;
+	public $footer_icon;
+	public $ts;
 
 	function __construct($fallback) {
 		$this->fallback = $fallback;
@@ -363,7 +376,8 @@ class SlackAttachment {
 	/**
 	 * The title is displayed as larger, bold text near the top of a message attachment.
 	 * @param string $title
-	 * @param optional string $link  By passing a valid URL in the link parameter (optional), the title text will be hyperlinked.
+	 * @param optional string $link  By passing a valid URL in the link parameter (optional), the
+	 * title text will be hyperlinked.
 	 */
 	function setTitle($title, $link = NULL) {
 		$this->title = $title;
@@ -373,8 +387,70 @@ class SlackAttachment {
 		return $this;
 	}
 
+	/**
+	 * A valid URL to an image file that will be displayed inside a message attachment. We currently
+	 *  support the following formats: GIF, JPEG, PNG, and BMP.
+	 *
+	 *  Large images will be resized to a maximum width of 400px or a maximum height of 500px, while
+	 *   still maintaining the original aspect ratio.
+	 * @param [type] $url [description]
+	 */
 	function setImage($url) {
 		$this->image_url = $url;
+		return $this;
+	}
+
+	/**
+	 * A valid URL to an image file that will be displayed as a thumbnail on the right side of a
+	 * message attachment. We currently support the following formats: GIF, JPEG, PNG, and BMP.
+	 *
+	 * The thumbnail's longest dimension will be scaled down to 75px while maintaining the aspect
+	 * ratio of the image. The filesize of the image must also be less than 500 KB.
+	 *
+	 * For best results, please use images that are already 75px by 75px.
+	 * @param string $url HTTP url of the thumbnail
+	 */
+	function setThumbnail($url) {
+		$this->thumb_url = $url;
+		return $this;
+	}
+
+	/**
+	 * Add some brief text to help contextualize and identify an attachment. Limited to 300
+	 * characters, and may be truncated further when displayed to users in environments with limited
+	 *  screen real estate.
+	 * @param string $text max 300 characters
+	 */
+	public function setFooterText($text) {
+		$this->footer = $text;
+		return $this;
+	}
+
+	/**
+	 * To render a small icon beside your footer text, provide a publicly accessible URL string in
+	 * the footer_icon field. You must also provide a footer for the field to be recognized.
+	 *
+	 * We'll render what you provide at 16px by 16px. It's best to use an image that is similarly
+	 * sized.
+	 * @param string $url 16x16 image url
+	 */
+	public function setFooterIcon($url) {
+		$this->footer_icon = $url;
+		return $this;
+	}
+
+	/**
+	 * Does your attachment relate to something happening at a specific time?
+	 *
+	 * By providing the ts field with an integer value in "epoch time", the attachment will display
+	 * an additional timestamp value as part of the attachment's footer. Use ts when referencing
+	 * articles or happenings. Your message will have its own timestamp when published.
+	 *
+	 * Example: Providing 123456789 would result in a rendered timestamp of Nov 29th, 1973.
+	 * @param int $timestamp Integer value in "epoch time"
+	 */
+	public function setTimestamp($timestamp) {
+		$this->ts = $timestamp;
 		return $this;
 	}
 
@@ -441,8 +517,25 @@ class SlackAttachment {
 			}
 			$data['fields'] = $fields;
 		}
+
 		if (isset($this->image_url)) {
 			$data['image_url'] = $this->image_url;
+		}
+
+		if (isset($this->thumb_url)) {
+			$data['thumb_url'] = $this->thumb_url;
+		}
+
+		if (isset($this->footer)) {
+			$data['footer'] = $this->footer;
+		}
+
+		if (isset($this->footer_icon)) {
+			$data['footer_icon'] = $this->footer_icon;
+		}
+
+		if (isset($this->ts)) {
+			$data['ts'] = $this->ts;
 		}
 
 		return $data;
