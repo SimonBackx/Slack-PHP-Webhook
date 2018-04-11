@@ -1,0 +1,10 @@
+# VS Code generated files/folders
+.history
+.vscode
+.vscode-insiders
+*.code-workspace
+
+# standard Composer ignores
+# from (https://github.com/github/gitignore/blob/master/Composer.gitignore)
+composer.phar
+/vendor/
