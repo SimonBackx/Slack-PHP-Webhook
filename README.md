@@ -184,7 +184,7 @@ $message->setText("<@W1A2BC3DD> approved your travel request. Book any airline y
 // notifications) and should not contain any markup.
 $attachment = new \SlackAttachment('Book your flights at https://flights.example.com/book/r123456');
 $attachment->addButton('Book flights 🛫', 'https://flights.example.com/book/r123456');
-$attachment->addButton('Unsubscribe', 'https://flights.example.com/unsubscribe');
+$attachment->addButton('Unsubscribe', 'https://flights.example.com/unsubscribe', 'danger');
 
 $message->addAttachment($attachment);
 
