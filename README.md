@@ -177,8 +177,11 @@ $slack->setDefaultUsername('Fly company');
 
 // Create a new message
 $message = new SlackMessage($slack);
-$message->setText("Hello world!");
+$message->setText("<@W1A2BC3DD> approved your travel request. Book any airline you like by continuing below.");
 
+// Create a new Attachment with fallback text, a plain-text summary of the attachment. 
+// This text will be used in clients that don't show formatted text (eg. IRC, mobile 
+// notifications) and should not contain any markup.
 $attachment = new \SlackAttachment('Book your flights at https://flights.example.com/book/r123456');
 $attachment->addButton('Book flights 🛫', 'https://flights.example.com/book/r123456');
 $attachment->addButton('Unsubscribe', 'https://flights.example.com/unsubscribe');
