@@ -1,1 +1,11 @@
 .DS_Store
+
+# Composer
+composer.phar
+/vendor/
+
+# Visual Studio Code
+.history
+.vscode
+.vscode-insiders
+*.code-workspace

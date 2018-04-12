@@ -15,7 +15,7 @@ Next, you will find your WebHook URL which you need to use this library. Save it
 ![Setup2](http://www.cloock.be/uploads/slack2.png)
 
 When you scroll all the way down, you get more options to change your default username, description and icon. You can overwrite these in your code.
-	 
+
 # Usage
 ## Installation
 
@@ -47,9 +47,9 @@ $message->setText("Hello world!");
 
 // Send it!
 if ($message->send()) {
-    echo "Hurray 😄";
+    echo "Hurray 😄";
 } else {
-    echo "Failed 😢";
+    echo "Failed 😢";
 }
 ```
 
@@ -84,11 +84,11 @@ You can overwrite the defaults on two levels: in a Slack instance (defaults for 
 
 ```php
 $slack = new Slack('https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX');
-$slack->setDefaultUsername("SlackPHP robot"); 
+$slack->setDefaultUsername("SlackPHP robot");
 $slack->setDefaultChannel("#general");
 
 // Unfurl links: automatically fetch and create attachments for detected URLs
-$slack->setDefaultUnfurlLinks(true); 
+$slack->setDefaultUnfurlLinks(true);
 
 // Set the default icon for messages to a custom image
 $slack->setDefaultIcon("http://www.domain.com/robot.png"); 
@@ -202,7 +202,10 @@ $message->send();
 All methods support a short syntax. E.g.:
 
 ```php
-(new SlackMessage($slack))->addAttachment($attachment1)->addAttachment($attachment2)->send();
+(new SlackMessage($slack))
+    ->addAttachment($attachment1)
+    ->addAttachment($attachment2)
+    ->send();
 ```
 
 # Warning
