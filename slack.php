@@ -93,7 +93,7 @@ class Slack {
         return $this;
     }
 
-    function setDefaultChannel() {
+    function setDefaultChannel($channel) {
         $this->channel = $channel;
         return $this;
     }
